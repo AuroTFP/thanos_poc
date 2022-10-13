@@ -1,0 +1,19 @@
+prometheus:
+  thanosIngress:
+    hosts:
+    - prod.prometheus.aws.aurotfp.com # TBD
+    annotations:
+      external-dns.alpha.kubernetes.io/hostname: prod.prometheus.aws.aurotfp.com  # TBD
+      alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1::certificate/<arn> # TBD
+      alb.ingress.kubernetes.io/load-balancer-attributes: access_logs.s3.enabled=true,access_logs.s3.bucket=,access_logs.s3.prefix=awselasticloadbalancing/prod # TBD
+  prometheusSpec:
+    externalLabels:
+      cluster: devtools
+      stage: prod
+      region: us-east-1
+
+defaultRules:
+  additionalRuleLabels:
+    cluster: devtools
+    stage: prod
+    region: us-east-1 
