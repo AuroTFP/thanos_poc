@@ -1,0 +1,8 @@
+prometheus:
+  thanosIngress:
+    enabled: false
+  prometheusSpec:
+    externalLabels:
+      cluster: observer
+      stage: prod
+      region: us-east-1

@@ -1,14 +1,14 @@
 terraform {
   required_providers {
     aws = {
-      source = "hashicorp/aws"
+      source  = "hashicorp/aws"
       version = "~> 4.24.0"
     }
   }
 
 }
 provider "aws" {
-  region  = "us-east-1"
+  region = "us-east-1"
 }
 resource "aws_s3_bucket" "metrics" {
   bucket = "dev-test-thanos-metrics-prometheus"
@@ -24,7 +24,7 @@ resource "aws_s3_bucket_acl" "metrics_acl" {
 }
 
 resource "aws_iam_policy" "thanos_metrics_policy" {
-  name        = "thanos_metrics_policy"
+  name = "thanos_metrics_policy"
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -40,7 +40,7 @@ resource "aws_iam_policy" "thanos_metrics_policy" {
           "s3:DeleteObject",
           "s3:PutObject"
         ]
-        Effect   = "Allow"
+        Effect = "Allow"
         Resource = [
           "arn:aws:s3:::${aws_s3_bucket.metrics.bucket}/*",
           "arn:aws:s3:::${aws_s3_bucket.metrics.bucket}"
@@ -64,7 +64,7 @@ resource "aws_iam_role" "thanos_role" {
         }
         Condition = {
           StringEquals = {
-            "oidc.eks.us-east-1.amazonaws.com/id/F81E2B8E1A426AD8093A807FA62BAD12:sub": "system:serviceaccount:platform:thanos-store"
+            "oidc.eks.us-east-1.amazonaws.com/id/F81E2B8E1A426AD8093A807FA62BAD12:sub" : "system:serviceaccount:platform:thanos-store"
           }
         }
       },
