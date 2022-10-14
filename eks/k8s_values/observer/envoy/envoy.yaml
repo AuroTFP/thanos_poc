@@ -8,7 +8,7 @@ files:
           port_value: 9901
     static_resources:
       listeners:
-      - name: listener_eks_test
+      - name: listener_clusterA
         address:
           socket_address:
             address: 0.0.0.0
@@ -46,28 +46,83 @@ files:
                       prefix: "/"
                       grpc: {}
                     route:
-                      host_rewrite_literal: clusterA.prometheus.example.net
-                      cluster: eks-tests-1
+                      host_rewrite_literal: eks-test-1.aws.aurotfp.com
+                      cluster: eks-test-1
       clusters:
-      - name: eks-tests-1
+      - name: eks-test-1
         connect_timeout: 30s
         type: logical_dns
         http2_protocol_options: {}
         dns_lookup_family: V4_ONLY
         load_assignment:
-          cluster_name: service_clusterA
+          cluster_name: eks-test-1
           endpoints:
           - lb_endpoints:
             - endpoint:
                 address:
                   socket_address:
-                    address: clusterA.prometheus.example.net
+                    address: eks-test-1.aws.aurotfp.com
                     port_value: 443
         transport_socket:
           name: envoy.transport_sockets.tls
           typed_config:
             "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
-            sni: clusterA.prometheus.example.net
+            sni: eks-test-1.aws.aurotfp.com
             common_tls_context:
               alpn_protocols:
               - "h2"
+
+listeners:
+  - name: listener_clusterA
+    address:
+      socket_address:
+        address: 0.0.0.0
+        port_value: 10000
+
+route_config: 
+  name: local_route
+  virtual_hosts:
+    - name: local_service
+      domains: ["*"]
+      routes:
+        - match:
+            prefix: "/"
+            grpc: {}
+          route:
+            host_rewrite_literal: eks-test-1.aws.aurotfp.com
+            cluster: eks-test-1
+
+clusters:
+  - name: eks-test-1
+    connect_timeout: 30s
+    type: logical_dns
+    http2_protocol_options: {}
+    dns_lookup_family: V4_ONLY
+    load_assignment:
+      cluster_name: eks-test-1
+      endpoints:
+      - lb_endpoints:
+        - endpoint:
+            address:
+              socket_address:
+                address: eks-test-1.aws.aurotfp.com
+                port_value: 443
+    transport_socket:
+      name: envoy.transport_sockets.tls
+      typed_config:
+        "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.UpstreamTlsContext
+        sni: example.com
+        common_tls_context:
+          alpn_protocols:
+          - "h2"
+service:
+  ports:
+    clusterA:
+      port: 10000
+      targetPort: clusterA
+      protocol: TCP
+      
+ports:
+  clusterA:
+    containerPort: 10000
+    protocol: TCP
