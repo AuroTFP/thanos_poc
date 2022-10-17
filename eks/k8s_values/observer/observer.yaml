@@ -3,6 +3,6 @@ prometheus:
     enabled: false
   prometheusSpec:
     externalLabels:
-      cluster: observer
+      cluster: infra-tools
       stage: prod
       region: us-east-1
