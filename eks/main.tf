@@ -49,7 +49,7 @@ module "infra_tools" {
 module "infra_tools_addons" {
   source = "github.com/aws-ia/terraform-aws-eks-blueprints//modules/kubernetes-addons?ref=v4.12.0"
 
-  eks_cluster_id = module.eks_blueprints.eks_cluster_id
+  eks_cluster_id = module.infra_tools.eks_cluster_id
 
   # EKS Addons
   enable_amazon_eks_vpc_cni            = true
