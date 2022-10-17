@@ -26,7 +26,7 @@ provider "kubernetes" {
   token                  = data.aws_eks_cluster_auth.cluster.token
 }
 
-module "infra_tools" {
+module "eks_blueprints" {
   source          = "github.com/aws-ia/terraform-aws-eks-blueprints?ref=v4.12.0"
   cluster_version = "1.23"
   cluster_name    = "infra-tools"
@@ -46,10 +46,10 @@ module "infra_tools" {
   }
 }
 
-module "infra_tools_addons" {
+module "eks_blueprints_kubernetes_addons" {
   source = "github.com/aws-ia/terraform-aws-eks-blueprints//modules/kubernetes-addons?ref=v4.12.0"
 
-  eks_cluster_id = module.infra_tools.eks_cluster_id
+  eks_cluster_id = module.eks_blueprints.eks_cluster_id
 
   # EKS Addons
   enable_amazon_eks_vpc_cni            = true
@@ -60,11 +60,9 @@ module "infra_tools_addons" {
   #K8s Add-ons
   enable_aws_load_balancer_controller = true
   enable_cluster_autoscaler           = true
-  enable_metrics_server               = true
-  enable_prometheus                   = true
-
-  prometheus_helm_config = {
-    chart = "kube-prometheus-stack"
+  enable_metrics_server               = true  
+  enable_kube_prometheus_stack      = true
+  kube_prometheus_stack_helm_config = {
     values = [templatefile("./k8s_values/shared.yaml", {}), 
               templatefile("./k8s_values/observer/observer.yaml", {})]
   }
@@ -105,9 +103,8 @@ module "observee_addons" {
   enable_aws_load_balancer_controller = true
   enable_cluster_autoscaler           = true
   enable_metrics_server               = true
-  enable_prometheus                   = true
-
-  prometheus_helm_config = {
+  enable_kube_prometheus_stack      = true
+  kube_prometheus_stack_helm_config = {
     chart = "kube-prometheus-stack"
     values = [templatefile("./k8s_values/shared.yaml", {}), 
               templatefile("./k8s_values/prod.yaml", {})]
