@@ -75,7 +75,7 @@ module "eks_blueprints_kubernetes_addons" {
   enable_kube_prometheus_stack      = true
   kube_prometheus_stack_helm_config = {
     values = [
-      "${file("shared.yaml")}"
+      "${file("kube-prometheus-stack/shared.yaml")}"
     ]
   }
 }
