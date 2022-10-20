@@ -1,8 +1,0 @@
-prometheus:
-  thanosIngress:
-    enabled: false
-  prometheusSpec:
-    externalLabels:
-      cluster: infra-tools
-      stage: prod
-      region: us-east-1

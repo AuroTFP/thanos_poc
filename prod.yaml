@@ -3,7 +3,7 @@ objstore:
     bucket: dev-test-thanos-metrics-prometheus
 query:
   stores: 
-    - dnssrv+_clusterA._tcp.envoy
+    - dnssrv+_cla plust._tcp.envoy
   extraArgs:
     - "--rule=dnssrv+_clusterA._tcp.envoy"
     - "--rule=dnssrv+_grpc._tcp.thanos-sidecar-grpc.platform.svc.cluster.local"

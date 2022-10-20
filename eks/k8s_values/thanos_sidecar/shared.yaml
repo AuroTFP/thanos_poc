@@ -1,6 +1,0 @@
-thanos:
-  baseImage: quay.io/thanos/thanos
-  version: v0.18.0
-  objectStorageConfig:
-    name: thanos-objstore-config
-    key: thanos.yaml

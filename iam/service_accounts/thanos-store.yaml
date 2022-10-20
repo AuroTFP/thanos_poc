@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: thanos-store
+  name: thanos-role
   namespace: platform
   annotations:
     eks.amazonaws.com/role-arn: arn:aws:iam::770688751007:role/thanos-role

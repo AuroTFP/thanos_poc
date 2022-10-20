@@ -1,13 +1,13 @@
 prometheus:
   thanosIngress:
     hosts:
-    - eks-test-1.aws.aurotfp.com
+    - observee.aws.aurotfp.com
     annotations:
-      external-dns.alpha.kubernetes.io/hostname: eks-test-1.aws.aurotfp.com
+      external-dns.alpha.kubernetes.io/hostname: observee.aws.aurotfp.com
       alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-1:770688751007:certificate/61c1254c-05f6-426c-9f4e-fc8ac296a802
       alb.ingress.kubernetes.io/load-balancer-attributes: access_logs.s3.enabled=true,access_logs.s3.bucket=,access_logs.s3.prefix=awselasticloadbalancing/clusterA
   prometheusSpec:
     externalLabels:
-      cluster: eks-test-1
+      cluster: observee
       stage: prod
       region: us-east-1
